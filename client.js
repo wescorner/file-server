@@ -20,7 +20,7 @@ promptInput();
 
 conn.on("data", (data) => {
 	console.log(data);
-	promptInput();
+	setTimeout(promptInput, 1000);
 });
 
 conn.setEncoding("utf8");
