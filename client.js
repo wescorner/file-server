@@ -1,16 +1,26 @@
 const net = require("net");
+const readline = require("readline");
 
 const conn = net.createConnection({
 	host: "localhost",
 	port: 3000,
 });
 
-conn.setEncoding("utf-8");
-
-conn.on("connect", () => {
-	conn.write("Client says hello!");
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout,
 });
+
+const promptInput = function () {
+	rl.question("Enter file name to be retreived: ", (answer) => {
+		conn.write(answer);
+	});
+};
+promptInput();
 
 conn.on("data", (data) => {
-	console.log("server says: ", data);
+	console.log(data);
+	promptInput();
 });
+
+conn.setEncoding("utf8");

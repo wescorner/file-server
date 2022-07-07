@@ -1,12 +1,19 @@
 const net = require("net");
+const fs = require("fs");
 
 const server = net.createServer();
 
 server.on("connection", (client) => {
 	console.log("client connected");
-	client.setEncoding("utf-8");
+	client.setEncoding("utf8");
 	client.on("data", (data) => {
-		console.log("Message from client: ", data);
+		fs.readFile(`./files/${data}`, "utf-8", (err, fileData) => {
+			if (err) {
+				client.write("ERROR: Incorrect file location!");
+			} else {
+				client.write(`Contents of ${data}: ${fileData}`);
+			}
+		});
 	});
 });
 
